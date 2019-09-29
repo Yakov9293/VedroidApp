@@ -7,21 +7,23 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.assholeapp.api.CatApi;
 import com.example.assholeapp.api.CatsService;
+import com.example.assholeapp.db.CatDao;
+import com.example.assholeapp.db.CatDb;
+import com.example.assholeapp.db.CatsDatabase;
 
 import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.http.Header;
 
 public class MainActivity extends AppCompatActivity {
 
     private RecyclerView catsView;
     private CatsAdapter catsAdapter;
-    private List<Cat> cats;
-
+    private List<CatApi> cats;
 
 
     @Override
@@ -31,14 +33,19 @@ public class MainActivity extends AppCompatActivity {
 
         catsView = findViewById(R.id.catsView);
 
+        CatsDatabase db = App.getInstance().getDatabase();
+        final CatDao catDao = db.catDao();
+
         String header = "22206ce7-ff06-465e-99f8-7171e5dd9b13";
         String order = "DESC_ORDER";
         Integer limit = 50;
         Integer page = 4;
-        CatsService.getInstance().getCatsApi().cats(header, limit, page, order).enqueue(new Callback<List<Cat>>() {
+        CatsService.getInstance().getCatsApi().cats(header, limit, page, order).enqueue(new Callback<List<CatApi>>() {
             @Override
-            public void onResponse(Call<List<Cat>> call, Response<List<Cat>> response) {
+            public void onResponse(Call<List<CatApi>> call, Response<List<CatApi>> response) {
                 cats = response.body();
+
+                //List<CatDb> catsDB = ;
 
                 catsView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
 
@@ -48,13 +55,10 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<List<Cat>> call, Throwable t) {
+            public void onFailure(Call<List<CatApi>> call, Throwable t) {
                 Log.d(MainActivity.class.getName(), "Падение");
             }
         });
-
-
-
 
 
         //catsAdapter.notifyDataSetChanged();

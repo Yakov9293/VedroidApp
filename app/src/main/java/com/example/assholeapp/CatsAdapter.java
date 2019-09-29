@@ -5,21 +5,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.assholeapp.api.CatApi;
 
 import java.util.List;
 
 public class CatsAdapter extends RecyclerView.Adapter<CatsAdapter.CatViewHolder> {
 
     private Context context;
-    private List<Cat> dataCats;
+    private List<CatApi> dataCats;
 
-    CatsAdapter(Context context, List<Cat> data) {
+    CatsAdapter(Context context, List<CatApi> data) {
         this.context = context;
         dataCats = data;
     }
@@ -33,7 +33,7 @@ public class CatsAdapter extends RecyclerView.Adapter<CatsAdapter.CatViewHolder>
 
     @Override
     public void onBindViewHolder(@NonNull CatViewHolder holder, int position) {
-        Cat cat = dataCats.get(position);
+        CatApi cat = dataCats.get(position);
         ImageView imageView = holder.catsImage;
 
         Glide.with(context)
