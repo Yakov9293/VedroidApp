@@ -5,14 +5,7 @@ import androidx.room.PrimaryKey;
 
 @Entity(tableName = "cat")
 public class CatDb {
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     public long id;
     public String imageUrl;
-    private static long idCount;
-
-    public CatDb(String imageUrl){
-        this.id = idCount;
-        this.imageUrl = imageUrl;
-        idCount++;
-    }
 }

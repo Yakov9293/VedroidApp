@@ -10,16 +10,16 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.assholeapp.api.CatApi;
+import com.example.assholeapp.db.CatDb;
 
 import java.util.List;
 
 public class CatsAdapter extends RecyclerView.Adapter<CatsAdapter.CatViewHolder> {
 
     private Context context;
-    private List<CatApi> dataCats;
+    private List<CatDb> dataCats;
 
-    CatsAdapter(Context context, List<CatApi> data) {
+    CatsAdapter(Context context, List<CatDb> data) {
         this.context = context;
         dataCats = data;
     }
@@ -33,7 +33,7 @@ public class CatsAdapter extends RecyclerView.Adapter<CatsAdapter.CatViewHolder>
 
     @Override
     public void onBindViewHolder(@NonNull CatViewHolder holder, int position) {
-        CatApi cat = dataCats.get(position);
+        CatDb cat = dataCats.get(position);
         ImageView imageView = holder.catsImage;
 
         Glide.with(context)

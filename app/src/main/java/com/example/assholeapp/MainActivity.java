@@ -12,6 +12,7 @@ import com.example.assholeapp.api.CatsService;
 import com.example.assholeapp.db.CatDao;
 import com.example.assholeapp.db.CatDb;
 import com.example.assholeapp.db.CatsDatabase;
+import com.example.assholeapp.mappers.CatApiToDbMapper;
 
 import java.util.List;
 
@@ -24,6 +25,8 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView catsView;
     private CatsAdapter catsAdapter;
     private List<CatApi> cats;
+    private List<CatDb> catsForDb;
+
 
 
     @Override
@@ -45,17 +48,28 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(Call<List<CatApi>> call, Response<List<CatApi>> response) {
                 cats = response.body();
 
-                //List<CatDb> catsDB = ;
+                catsForDb = CatApiToDbMapper.catsApiToDb(cats);
+
+                catDao.insert(catsForDb);
 
                 catsView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
 
-                catsAdapter = new CatsAdapter(MainActivity.this, cats);
+                catsAdapter = new CatsAdapter(MainActivity.this, catsForDb);
 
                 catsView.setAdapter(catsAdapter);
             }
 
             @Override
             public void onFailure(Call<List<CatApi>> call, Throwable t) {
+
+                catsForDb = catDao.all();
+
+                catsView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+
+                catsAdapter = new CatsAdapter(MainActivity.this, catsForDb);
+
+                catsView.setAdapter(catsAdapter);
+
                 Log.d(MainActivity.class.getName(), "Падение");
             }
         });
